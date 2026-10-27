@@ -1,0 +1,222 @@
+/* =========================================================
+ * base.css — 设计系统（PRD 10.1/10.3）
+ * 暖米底 + 毛绒青绿主色（白字对比 ≥ 4.5:1）+ bad-cat 暖橘点缀
+ * 视觉基调对齐 IP 主视觉照片：暖灰米背景 / 奶白圆胖标题 / 毛绒质感
+ * ========================================================= */
+
+/* hidden 属性优先级最高：防止组件 display 覆盖导致提前显示 */
+[hidden] { display: none !important; }
+
+/* 全站视频防黑屏：未解码出首帧时，video 元素不渲染内容；
+ * JS 会给每个视频挂 background-image（该视频首帧封面），
+ * 这里统一让背景按封面式铺满，首帧画好后自动覆盖背景。 */
+video {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* 圆胖展示字体（仅标题/按钮下载子集，断网自动回退系统字体） */
+@import url('https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&display=swap');
+
+:root {
+  --bg: #ede5d4;             /* 暖灰米底（照片背景色） */
+  --bg-soft: #f6f0e2;
+  --card: #fffdf6;
+  --ink: #33291c;
+  --ink-soft: #77684f;
+  --line: #e2d5bd;
+  --primary: #3d7d74;        /* 毛绒青绿（照片按钮色） */
+  --primary-deep: #2d625b;
+  --orange: #e8a366;         /* IP 暖橘点缀 */
+  --orange-deep: #c97b32;
+  --red: #c0443f;
+  --green: #3e8e5a;
+  --purple: #a48ec9;
+  --shadow:
+    0 2px 4px rgba(77, 62, 42, .06),
+    0 10px 26px rgba(77, 62, 42, .12);
+  --shadow-lg:
+    0 4px 10px rgba(77, 62, 42, .08),
+    0 22px 52px rgba(77, 62, 42, .18);
+  --r-lg: 22px;
+  --r-md: 14px;
+  --r-sm: 9px;
+  --font: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC", sans-serif;
+  --font-display: "ZCOOL QingKe HuangYou", "Yuanti SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  font-family: var(--font);
+  background:
+    radial-gradient(1200px 600px at 50% -10%, rgba(255, 250, 238, .8), transparent 60%),
+    linear-gradient(180deg, #efe8d8 0%, #e9dfca 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+/* ---- 猫爪光标：默认淡粉橘，可点击元素深橘 ---- */
+body {
+  cursor: url("../assets/images/paw-cursor.png") 16 19, auto;
+}
+button, a, [role="button"], label, summary,
+.opt-card, .scene-opt, .tp-card, .btn, .link-btn, .badge,
+.modal-close, .intro-enter, .intro-skip, .intro-sound,
+.result-bg-sound, .btn-back, .tie-pick button {
+  cursor: url("../assets/images/paw-cursor-click.png") 16 19, pointer !important;
+}
+button { font-family: inherit; }
+img, video { max-width: 100%; }
+
+/* 标题统一使用圆胖展示字体（毛绒 IP 调性） */
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; letter-spacing: 2px; }
+
+/* 可见焦点（PRD 10.2） */
+:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; border-radius: 6px; }
+
+/* 减少动画模式：关闭过渡与关键帧 */
+body.reduced-motion *, body.reduced-motion *::before, body.reduced-motion *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* ---------- 视图切换 ---------- */
+.screen { display: none; min-height: 100vh; animation: screenIn .4s ease both; }
+.screen.active { display: block; }
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------- 按钮（毛绒质感：渐变 + 内高光 + 暖投影） ---------- */
+.btn {
+  border: none; border-radius: 999px;
+  padding: 11px 24px; font-size: 15px; font-weight: 600;
+  letter-spacing: 1.5px;
+  transition: transform .15s, box-shadow .15s, background .15s, opacity .15s, filter .15s;
+  min-height: 44px;
+}
+.btn:active { transform: scale(.97); }
+.btn-primary {
+  background: linear-gradient(180deg, #4a8c82 0%, #3d7d74 52%, #356e66 100%);
+  color: #fffdf6;
+  text-shadow: 0 1px 2px rgba(24, 52, 48, .35);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, .28),
+    inset 0 -2px 3px rgba(21, 47, 43, .25),
+    0 5px 16px rgba(45, 98, 91, .38);
+}
+.btn-primary:hover {
+  background: linear-gradient(180deg, #549a8f 0%, #46887e 52%, #3a756c 100%);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, .3),
+    inset 0 -2px 3px rgba(21, 47, 43, .25),
+    0 9px 24px rgba(45, 98, 91, .45);
+}
+.btn-secondary {
+  background: linear-gradient(180deg, #fffdf6, #f4edda);
+  color: var(--primary-deep);
+  border: 1.5px solid #d8cdb2;
+  box-shadow: inset 0 1.5px 0 rgba(255, 255, 255, .8), 0 3px 10px rgba(77, 62, 42, .1);
+}
+.btn-secondary:hover { background: #f2e9d3; transform: translateY(-1px); }
+.btn-ghost {
+  background: rgba(255, 253, 246, .6); color: var(--ink-soft);
+  border: 1.5px solid var(--line);
+}
+.btn-ghost:hover { color: var(--ink); border-color: var(--primary); background: var(--bg-soft); }
+.btn-danger {
+  background: linear-gradient(180deg, #fbeae6, #f4dcd6);
+  color: var(--red);
+  border: 1.5px solid #e8c7bf;
+}
+.btn-danger:hover { background: #f0d5cd; }
+.btn-lg { padding: 15px 42px; font-size: 18px; letter-spacing: 2.5px; }
+.btn-sm { padding: 7px 14px; font-size: 13px; letter-spacing: .5px; min-height: 36px; }
+.btn:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow: none; filter: saturate(.6); }
+
+.link-btn {
+  border: none; background: none; color: var(--primary-deep);
+  text-decoration: underline; text-underline-offset: 3px; font-size: 13.5px;
+  min-height: 44px; padding: 0 6px;
+}
+.link-btn.danger { color: var(--red); }
+
+/* ---------- 徽章 / 卡片 ---------- */
+.badge {
+  display: inline-block; padding: 4px 14px; border-radius: 999px;
+  background: var(--bg-soft); border: 1.5px solid var(--line);
+  font-size: 13px; color: var(--ink-soft); margin: 0 4px;
+}
+.ticket {
+  background: var(--card); border-radius: var(--r-md);
+  border: 1.5px solid var(--line); box-shadow: var(--shadow);
+}
+
+.screen-head { text-align: center; padding: 44px 20px 10px; }
+.screen-head h2 { font-size: 30px; letter-spacing: 4px; color: var(--ink); }
+.screen-head p { color: var(--ink-soft); margin-top: 6px; }
+.demo-note-inline { font-size: 12.5px; opacity: .75; }
+.page-footer { display: flex; justify-content: center; gap: 14px; padding: 30px 20px 70px; flex-wrap: wrap; }
+
+/* ---------- 表单错误（文本 + aria-live） ---------- */
+.field-error {
+  color: var(--red); font-size: 13.5px; margin-top: 8px; font-weight: 600;
+}
+
+/* ---------- 弹窗 ---------- */
+.modal-mask {
+  position: fixed; inset: 0; z-index: 90;
+  background: rgba(30, 27, 21, .5);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px; animation: fadeIn .2s ease;
+}
+.modal {
+  background: var(--card); border-radius: var(--r-lg);
+  max-width: 620px; width: 100%;
+  max-height: 88vh; overflow: auto;
+  box-shadow: var(--shadow-lg);
+  animation: popIn .28s cubic-bezier(.34, 1.4, .64, 1);
+}
+.modal-head {
+  padding: 20px 24px 0; font-size: 19px; font-weight: 700;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+}
+.modal-close {
+  border: none; background: var(--bg-soft); border-radius: 50%;
+  width: 36px; height: 36px; font-size: 15px; color: var(--ink-soft);
+  flex: 0 0 auto;
+}
+.modal-body { padding: 16px 24px 24px; }
+@keyframes fadeIn { from { opacity: 0; } }
+@keyframes popIn { from { opacity: 0; transform: scale(.94) translateY(10px); } }
+
+/* ---------- Toast（短时反馈，不承载关键错误） ---------- */
+#toast-root {
+  position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+  z-index: 99; display: flex; flex-direction: column; gap: 8px; align-items: center;
+  pointer-events: none;
+}
+.toast {
+  background: var(--ink); color: #fff8ec;
+  padding: 10px 22px; border-radius: 999px; font-size: 14px;
+  box-shadow: var(--shadow-lg);
+  animation: toastIn .25s ease, toastOut .4s ease 2.4s both;
+  max-width: 82vw;
+}
+.toast.good { background: var(--green); }
+.toast.warn { background: var(--red); }
+@keyframes toastIn { from { opacity: 0; transform: translateY(-14px); } }
+@keyframes toastOut { to { opacity: 0; transform: translateY(-14px); } }
+
+/* ---------- 响应式基础 ---------- */
+@media (max-width: 720px) {
+  .screen-head h2 { font-size: 24px; }
+  .btn-lg { padding: 13px 32px; font-size: 16px; }
+  .page-footer { gap: 10px; }
+}

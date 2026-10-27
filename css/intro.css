@@ -1,0 +1,190 @@
+/* =========================================================
+ * intro.css — 全屏开场动画页 + 主页（welcome）版式
+ * 视频不裁剪：object-fit: cover 直接铺满。
+ * ========================================================= */
+
+/* ---------- 开场页 ---------- */
+.intro-screen {
+  position: fixed; inset: 0; z-index: 80;
+  background: #17110a;
+  overflow: hidden;
+  transition: opacity .85s ease;
+}
+.intro-screen.fade-out { opacity: 0; pointer-events: none; }
+
+.intro-media { position: absolute; inset: 0; overflow: hidden; }
+.intro-media video,
+.intro-media img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* 上下柔和暗角（暖棕调，贴合照片氛围），提升按钮可读性 */
+.intro-media::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    linear-gradient(to top, rgba(26, 19, 11, .74), transparent 34%),
+    linear-gradient(to bottom, rgba(26, 19, 11, .48), transparent 22%);
+  pointer-events: none;
+}
+
+.intro-ui {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-end;
+  padding: 0 24px 9vh;
+  pointer-events: none; /* 只让按钮可点 */
+}
+.intro-ui > * { pointer-events: auto; }
+
+.intro-title-box {
+  position: absolute; top: 8vh; left: 0; right: 0;
+  text-align: center; color: #fff6e6;
+  animation: introTitleIn .9s ease both;
+}
+.intro-title-box h1 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5.6vw, 56px);
+  font-weight: 400;
+  letter-spacing: clamp(4px, 1vw, 10px);
+  text-indent: clamp(4px, 1vw, 10px); /* 抵消末字字距，保持视觉居中 */
+  text-shadow:
+    0 2px 6px rgba(20, 14, 6, .55),
+    0 6px 26px rgba(20, 14, 6, .45),
+    0 0 40px rgba(255, 226, 178, .22);
+}
+.intro-title-box p {
+  margin-top: 12px; font-size: clamp(13px, 1.6vw, 16px);
+  color: #f3e8cf;
+  letter-spacing: 3.5px; text-indent: 3.5px;
+  text-shadow:
+    0 1px 3px rgba(22, 15, 7, .8),
+    0 2px 12px rgba(22, 15, 7, .6),
+    0 0 24px rgba(22, 15, 7, .35);
+}
+@keyframes introTitleIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.intro-enter {
+  display: inline-flex; align-items: center; gap: 10px;
+  border: 2px solid rgba(255, 250, 238, .85);
+  outline: 4px solid rgba(63, 139, 120, .28);
+  outline-offset: 2px;
+  font-family: var(--font-display);
+  letter-spacing: 4px; text-indent: 4px;
+  padding: 15px 44px;
+  border-radius: 999px;
+  font-size: 19px; font-weight: 700;
+  color: #fdf9ef;
+  background: linear-gradient(180deg, #46907d, #2d6a5a);
+  cursor: pointer;
+  animation: introEnterIn .6s ease both;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, .32),
+    inset 0 -3px 4px rgba(18, 45, 39, .35),
+    0 12px 34px rgba(24, 60, 52, .55);
+  transition: transform .18s, box-shadow .18s, filter .18s;
+}
+.intro-enter .i { flex: 0 0 auto; }
+.intro-enter .arr { letter-spacing: 0; text-indent: 0; transition: transform .18s; font-weight: 400; }
+.intro-enter:hover {
+  transform: translateY(-2px) scale(1.03);
+  filter: brightness(1.07);
+}
+.intro-enter:hover .arr { transform: translateX(4px); }
+@keyframes introEnterIn {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.intro-skip {
+  position: absolute; top: max(18px, env(safe-area-inset-top)); right: 20px;
+  border: 1.5px solid rgba(255, 248, 236, .55);
+  background: rgba(20, 16, 11, .38); color: #fff8ec;
+  border-radius: 999px; padding: 9px 20px;
+  font-size: 14px; min-height: 40px;
+  backdrop-filter: blur(4px);
+  transition: background .15s, transform .15s;
+}
+.intro-skip:hover { background: rgba(20, 16, 11, .6); transform: translateY(-1px); }
+
+/* 声音开关：与跳过按钮同款式，位于其下方 */
+.intro-sound {
+  position: absolute; top: calc(max(18px, env(safe-area-inset-top)) + 52px); right: 20px;
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1.5px solid rgba(255, 248, 236, .55);
+  background: rgba(20, 16, 11, .38); color: #fff8ec;
+  border-radius: 999px; padding: 9px 16px;
+  font-size: 13px; min-height: 36px; font-family: inherit;
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  transition: background .15s, transform .15s;
+}
+.intro-sound:hover { background: rgba(20, 16, 11, .6); transform: translateY(-1px); }
+.intro-sound .i { flex: 0 0 auto; }
+
+.intro-play {
+  border: none; background: linear-gradient(180deg, #fffcf3, #f3ead6); color: var(--ink);
+  border-radius: 999px; padding: 14px 36px;
+  font-family: var(--font-display);
+  font-size: 18px; letter-spacing: 2px; min-height: 52px;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, .85),
+    0 10px 30px rgba(0, 0, 0, .45);
+  animation: introEnterIn .5s ease both;
+}
+
+/* ---------- 主页（welcome） ---------- */
+.welcome-wrap {
+  max-width: 1120px; margin: 0 auto;
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1.08fr .92fr;
+  align-items: center; gap: 48px;
+  padding: 48px 36px;
+}
+.welcome-badges { margin-bottom: 18px; }
+.welcome-title {
+  font-size: clamp(34px, 4.6vw, 50px);
+  letter-spacing: 4px; line-height: 1.25;
+  color: var(--ink);
+}
+.welcome-sub {
+  margin-top: 16px; color: var(--ink-soft);
+  font-size: 15.5px; max-width: 34em;
+}
+.welcome-actions {
+  margin-top: 30px;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 13px;
+}
+.welcome-links {
+  margin-top: 26px; display: flex; align-items: center; gap: 8px;
+  color: var(--ink-soft); font-size: 13px;
+}
+.welcome-disclaimer { margin-top: 22px; }
+.welcome-disclaimer p { font-size: 12.5px; color: var(--ink-soft); opacity: .8; max-width: 36em; }
+
+.welcome-right { min-width: 0; }
+.wm-crop {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  box-shadow: var(--shadow-lg);
+  border: 1.5px solid var(--line);
+  background: #14100b;
+}
+.wm-crop video {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 880px) {
+  .welcome-wrap {
+    grid-template-columns: 1fr;
+    gap: 28px; padding: 34px 20px 60px;
+  }
+  .welcome-right { order: -1; }
+  .intro-ui { padding-bottom: 7vh; }
+}

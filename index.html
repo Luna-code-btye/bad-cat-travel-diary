@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>坏小贝旅行日记 · 互动旅行模拟</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/journey.css">
+<link rel="stylesheet" href="css/intro.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ================= 视图 0：全屏开场动画 /intro ================= -->
+  <section class="screen intro-screen" id="screen-intro">
+    <div class="intro-media">
+      <video id="intro-video"
+             src="assets/videos/开场场景1.mp4"
+             poster="assets/images/storyboard/bad-cat-开场四格故事板.png"
+             muted playsinline autoplay preload="auto"></video>
+      <img id="intro-poster" src="assets/images/storyboard/bad-cat-开场四格故事板.png"
+           alt="旅行搭子鉴定局 · 开场" hidden>
+    </div>
+    <div class="intro-ui">
+      <div class="intro-title-box" id="intro-title-box" hidden>
+        <h1>坏小贝旅行日记</h1>
+        <p>七个旅行剧情 · 你的每次选择都会暴露旅行人格</p>
+      </div>
+      <button class="intro-enter" id="btn-intro-enter" hidden>
+        <svg class="i" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+        <span>进入旅行世界</span><span class="arr">→</span>
+      </button>
+      <button class="intro-sound" id="btn-intro-sound" hidden aria-label="开启声音"><svg class="i" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>开启声音</button>
+      <button class="intro-skip" id="btn-intro-skip">跳过 ›</button>
+      <button class="intro-play" id="btn-intro-play" hidden>▶ 播放开场动画</button>
+    </div>
+  </section>
+
+  <!-- ================= 视图 1：首页 /welcome ================= -->
+  <section class="screen" id="screen-welcome">
+    <div class="welcome-wrap">
+      <div class="welcome-left">
+        <div class="welcome-badges">
+          <span class="badge"><svg class="i" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>约 3–5 分钟</span>
+          <span class="badge"><svg class="i" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>本地保存</span>
+          <span class="badge"><svg class="i" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>无需登录</span>
+        </div>
+        <h1 class="welcome-title">坏小贝旅行日记</h1>
+        <div class="welcome-actions">
+          <button class="btn btn-primary btn-lg" id="btn-new"><svg class="i" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>开始旅行模拟</button>
+          <button class="btn btn-secondary btn-lg" id="btn-continue" hidden><svg class="i" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>继续上次进度</button>
+          <button class="btn btn-secondary btn-lg" id="btn-last-result" hidden></button>
+          <button class="btn btn-ghost" id="btn-explore-home"><svg class="i" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>探索 8 种旅行风格</button>
+        </div>
+        <div class="welcome-links">
+          <button class="link-btn" id="btn-howto">体验说明</button>
+          <span>·</span>
+          <button class="link-btn danger" id="btn-clear-data">清除本地记录</button>
+          <span>·</span>
+          <button class="link-btn" id="btn-motion-toggle">减少动画：关</button>
+        </div>
+        <div class="welcome-disclaimer">
+          <p>⚠️ 场景价格、活动时长和分类标签均为演示数据；结果用于旅行风格探索，不构成心理测评。</p>
+        </div>
+      </div>
+      <div class="welcome-right">
+        <div class="wm-crop">
+          <video id="welcome-video" src="assets/videos/开场场景1.mp4"
+                 poster="assets/images/storyboard/bad-cat-开场四格故事板.png" muted playsinline loop></video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 视图 1.5：任务初始化 /setup ================= -->
+  <section class="screen" id="screen-setup">
+    <header class="screen-head">
+      <h2>🧳 旅行任务初始化</h2>
+      <p>你和朋友「小满」去成都玩三天，总预算 ¥5,000。<b>小满喜欢拍照，但不适合连续高强度步行。</b></p>
+      <p class="demo-note-inline">（演示场景，不代表真实价格或真实人物）</p>
+    </header>
+    <div class="setup-body">
+      <div class="setup-block">
+        <h3>① 这次旅行，你最想要什么？</h3>
+        <div class="card-row" id="goal-row"></div>
+      </div>
+      <div class="setup-block">
+        <h3>② 大部分预算，你打算花在哪？<span class="setup-remaining" id="alloc-total">总预算 ¥5,000</span></h3>
+        <div class="card-row" id="focus-row"></div>
+        <p class="alloc-preview" id="alloc-preview" aria-live="polite"></p>
+      </div>
+      <div class="setup-confirm">
+        <button class="btn btn-primary btn-lg" id="btn-confirm-setup" disabled>✅ 确认，进入剧情</button>
+        <p class="confirm-hint" id="setup-hint">确认后将创建本地会话并自动保存</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 视图 2.5：人格分析进度 /analyze ================= -->
+  <section class="screen" id="screen-analyze">
+    <div class="analyze-wrap">
+      <div class="analyze-left">
+        <p class="analyze-eyebrow">TRAVEL PERSONALITY</p>
+        <h2 class="analyze-title">正在鉴定你的<br>旅行人格。</h2>
+        <p class="analyze-sub">回顾这三天里的每一个选择——不是所有猫，都走一样的路。</p>
+        <ul class="analyze-steps" id="analyze-steps">
+          <li><span class="as-check">🐾</span><div><b>读取剧情选择</b><i>徒步遇雨 · 排队分歧 · 预算告急</i></div></li>
+          <li><span class="as-check">🐾</span><div><b>对照 8 种旅行人格</b><i>从佛系流浪汉到特种兵指挥官</i></div></li>
+          <li><span class="as-check">🐾</span><div><b>生成专属旅行报告</b><i>匹配度、三条倾向与旅行记录</i></div></li>
+        </ul>
+      </div>
+      <div class="analyze-right">
+        <div class="radar">
+          <span class="radar-ring r1"></span>
+          <span class="radar-ring r2"></span>
+          <span class="radar-ring r3"></span>
+          <span class="radar-dot d1"></span>
+          <span class="radar-dot d2"></span>
+          <div class="radar-core">
+            <video id="analyze-video" src="assets/videos/用户吃饭.mp4" muted playsinline loop preload="auto"></video>
+            <span class="radar-paw" aria-hidden="true">🐾</span>
+          </div>
+        </div>
+        <div class="analyze-progress"><div class="analyze-fill" id="analyze-fill"></div></div>
+        <b class="analyze-num" id="analyze-num">0%</b>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 视图 3：结果页 /result ================= -->
+  <section class="screen" id="screen-result">
+    <!-- 人格揭晓视频：背景循环 + 音乐 -->
+    <div class="result-bg" aria-hidden="true">
+      <video id="result-bg-video" playsinline loop preload="auto" hidden></video>
+      <div class="result-bg-veil"></div>
+    </div>
+    <button class="result-bg-sound" id="btn-result-bg-sound" hidden aria-label="背景声音开关"></button>
+    <header class="screen-head">
+      <h2>🏆 旅行风格结果</h2>
+      <p class="result-status">基于完整三天行程生成</p>
+    </header>
+    <div class="result-body" id="result-body"></div>
+    <div class="page-footer">
+      <button class="btn btn-ghost" id="btn-result-evidence">📄 查看完整依据</button>
+      <button class="btn btn-secondary" id="btn-result-compare">⚖️ 与其他风格比较</button>
+      <button class="btn btn-secondary" id="btn-result-explore">🧭 人格图鉴</button>
+      <button class="btn btn-primary" id="btn-result-poster">🖼 生成分享海报</button>
+      <button class="btn btn-danger" id="btn-result-replan">🔄 重新规划</button>
+    </div>
+  </section>
+
+  <!-- ================= 视图 4：人格图鉴 /explore ================= -->
+  <section class="screen" id="screen-explore">
+    <header class="screen-head head-nav">
+      <button class="btn-back" id="btn-explore-back" aria-label="返回主页"><svg class="i" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>返回</button>
+      <h2>🧭 旅行风格图鉴</h2>
+      <p id="explore-count">显示 8 / 8 种风格</p>
+    </header>
+    <div class="explore-body">
+      <div class="explore-toolbar">
+        <input type="search" id="explore-search" placeholder="搜索名称、口头禅、技能、目的地…" aria-label="搜索旅行风格">
+        <button class="btn btn-ghost btn-sm" id="btn-filter-reset">重置筛选</button>
+      </div>
+      <div class="filter-groups" id="filter-groups"></div>
+      <div class="chips-selected" id="chips-selected"></div>
+      <div class="style-grid" id="style-grid"></div>
+      <div class="empty-state" id="explore-empty" hidden>
+        <p>没有找到符合条件的人格。</p>
+        <p class="empty-sub">建议减少筛选条件，或清除全部筛选。</p>
+        <button class="btn btn-ghost" id="btn-filter-clear-all">清除全部筛选</button>
+      </div>
+    </div>
+    <div class="compare-bar" id="compare-bar" hidden>
+      <span id="compare-bar-text">已选 0 / 3</span>
+      <div id="compare-bar-names"></div>
+      <div>
+        <button class="btn btn-ghost btn-sm" id="btn-compare-clear">清空</button>
+        <button class="btn btn-primary btn-sm" id="btn-compare-start" disabled>开始对比 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 视图 5：风格对比 /compare ================= -->
+  <section class="screen" id="screen-compare">
+    <header class="screen-head">
+      <h2>⚖️ 风格对比</h2>
+      <p>横向比较 2–3 种旅行风格（数据与图鉴同源）</p>
+    </header>
+    <div class="compare-body" id="compare-body"></div>
+    <div class="page-footer">
+      <button class="btn btn-ghost" id="btn-compare-back">← 返回图鉴</button>
+    </div>
+  </section>
+</div>
+
+<!-- 全局错误条（所有页面可见） -->
+<div class="error-bar error-bar-fixed" id="error-bar" role="alert" hidden>
+  <span id="error-text"></span>
+  <button class="btn btn-ghost btn-sm" id="error-close">关闭</button>
+</div>
+
+<!-- 弹窗 / Toast -->
+<div id="modal-root"></div>
+<div id="toast-root" aria-live="polite"></div>
+
+<!-- 剧情场景层：视频铺满全屏 + 顶部三倾向条 + 底部选项 -->
+<div id="scene-layer" class="scene-layer" hidden>
+  <!-- 封面层：视频首帧图，始终在视频下方铺满，用于消除缓冲期黑屏 -->
+  <img id="scene-cover" class="scene-cover" alt="" aria-hidden="true" decoding="async">
+  <video id="scene-video" playsinline preload="auto"></video>
+  <div id="scene-loading" class="scene-loading" hidden>这一幕正在加载…</div>
+
+  <header class="scene-top">
+    <div class="scene-tend" role="group" aria-label="当前旅行倾向">
+      <div class="ts-row"><span class="ts-label"><svg class="tsi" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>计划与行动</span><div class="ts-bar"><div class="ts-fill ts-plan" id="scene-tend-plan"></div></div><b id="scene-tend-plan-num">50</b></div>
+      <div class="ts-row"><span class="ts-label"><svg class="tsi" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>享受与体验</span><div class="ts-bar"><div class="ts-fill ts-enjoy" id="scene-tend-enjoy"></div></div><b id="scene-tend-enjoy-num">50</b></div>
+      <div class="ts-row"><span class="ts-label"><svg class="tsi" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>应变与协作</span><div class="ts-bar"><div class="ts-fill ts-adapt" id="scene-tend-adapt"></div></div><b id="scene-tend-adapt-num">50</b></div>
+    </div>
+    <div class="scene-sub">
+      <div class="scene-status" role="group" aria-label="体力与心情">
+        <div class="ts-row"><span class="ts-label"><svg class="tsi" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>体力</span><div class="ts-bar"><div class="ts-fill ts-energy" id="scene-energy"></div></div><b id="scene-energy-num">100</b></div>
+        <div class="ts-row"><span class="ts-label"><svg class="tsi" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>心情</span><div class="ts-bar"><div class="ts-fill ts-mood" id="scene-mood"></div></div><b id="scene-mood-num">75</b></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 剧情标题与正文：顶部区域，不压角色面部 -->
+  <div class="scene-head">
+    <h3 id="scene-title"></h3>
+    <p id="scene-story"></p>
+  </div>
+
+  <div class="scene-bottom">
+    <div class="scene-options" id="scene-options" role="group" aria-label="选择你的应对方式"></div>
+    <div class="scene-actions">
+      <span class="scene-hint" id="scene-hint"><svg class="paw" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><ellipse cx="7" cy="8" rx="2.1" ry="2.8"/><ellipse cx="12" cy="6.5" rx="2.1" ry="2.8"/><ellipse cx="17" cy="8" rx="2.1" ry="2.8"/><ellipse cx="19.5" cy="12.5" rx="1.9" ry="2.4"/><path d="M12 11c-3.2 0-6 2.6-6 5.6 0 1.9 1.5 3.4 3.4 3.4 1 0 1.8-.4 2.6-.4s1.6.4 2.6.4c1.9 0 3.4-1.5 3.4-3.4 0-3-2.8-5.6-6-5.6z"/></svg><span id="scene-hint-text">先选一个应对方式（不会显示内部计分）</span></span>
+      <button class="btn btn-primary" id="btn-scene-confirm" disabled><svg class="paw" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><ellipse cx="7" cy="8" rx="2.1" ry="2.8"/><ellipse cx="12" cy="6.5" rx="2.1" ry="2.8"/><ellipse cx="17" cy="8" rx="2.1" ry="2.8"/><ellipse cx="19.5" cy="12.5" rx="1.9" ry="2.4"/><path d="M12 11c-3.2 0-6 2.6-6 5.6 0 1.9 1.5 3.4 3.4 3.4 1 0 1.8-.4 2.6-.4s1.6.4 2.6.4c1.9 0 3.4-1.5 3.4-3.4 0-3-2.8-5.6-6-5.6z"/></svg>确认选择</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- file:// 双击可直接打开（经典脚本）；本地开发可用 module 版：改 js/prd-*.js 后运行 node build-bundle.mjs -->
+<script src="js/app.bundle.js"></script>
+</body>
+</html>
